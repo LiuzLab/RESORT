@@ -26,7 +26,6 @@ To test if MIST dependencies are installed:
 (env_MIST)$ python
 [GCC 9.4.0] on linux
 Type "help", "copyright", "credits" or "license" for more information.
-$ from ReST import ReST
 >>> from ReST import ReST
 >>>
 ```
@@ -37,20 +36,21 @@ We recommend using an virtual environment for stereoscope installation. To run R
 
 ```console
 $ cd ~/stsc/
-$ python3 -m venv env_stsc
-$ source env_stsc/bin/activate
-$ ./setup.py install
+$ python3 -m venv (env_stsc)
+(env_stsc)$ source env_stsc/bin/activate
+(env_stsc)$ ./setup.py install
 ```
 
 To test stereoscope is installed: 
 
 ```console
-$ python -c "import stsc; print(stsc.__version__)"
+(env_stsc)$ python -c "import stsc; print(stsc.__version__)"
 stereoscope : 0.3.1
-$ stereoscope test
+(env_stsc)$ stereoscope test
 successfully installed stereoscope CLI
 ```
 
+For any issues occured during installation of stereoscope, please refer to [stsc-issues](https://github.com/almaan/stereoscope/issues) or open an issue in RESORT's issue panel.
 
 
 ### Other R programming based deconvolution methods' dependencies
@@ -62,4 +62,9 @@ Although we provided adaptors to integrate ReSort with **R**-based deconvolution
 * [Spotlight] (https://marcelosua.github.io/SPOTlight/)
 * [SpatialDWLS/Giotto] (https://rubd.github.io/Giotto_site/)
 
-###
+### Input data format
+1. For 10X Visium, Space Ranger `Folder` with the following contents:
+  - [Folder]/spatial/tissue_positions_list.csv
+  - [Folder]/filtered_feature_bc_matrix.h5
+2. General spatial transcriptomics data:
+  - counts.csv - gene expression data frame in Pandas.DataFrame format, where each row is a spot and each column is a gene. Spots' indices are in the format of `axb` where `a` is `x coordinate` and `b` is `y coordinate`.
