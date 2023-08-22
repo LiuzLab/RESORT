@@ -5,9 +5,21 @@ import pandas as pd
 import seaborn as sns
 from matplotlib import pyplot as plt
 import yaml
+import argparse
+import logging
+
+def get_yaml(file_path):
+    return yaml.safe_load(open(file_path, "r"))
 
 def get_args(file_path):
-    return yaml.safe_load(open(file_path, "r"))
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--input', type=str, default='', required=True)           # positional argument
+    # parser.add_argument('--visium', type=str, default='', required=False)
+    parser.add_argument('--param_fn', type=str, required=True, help='path to yaml file containing parameters for MIST and RESORT.')
+    parser.add_argument('-o', '--outdir', type=str, required=True,
+                        help='folder to save ReSort results')
+    args = parser.parse_args()
+    return args
 
 def load_csv(fn: str):
     df = pd.read_csv(fn, index_col=0)
@@ -29,16 +41,16 @@ def save_ReSort(rd, folder):
     rd.save_ReSort(folder, fmt='csv')
     rd.save_ReSort(folder, fmt='tsv')
 
-def region_detect_mist(rd, args):   
-    rd.preprocess(species=args['MIST']['species'],
-                   hvg_prop=args['MIST']['hvg'], 
-                   n_pcs=args['MIST']['n_pcs'],
-                    min_cell_count=args['MIST']['min_cell_count'],
-                      min_read_count=args['MIST']['min_read_count'])
+def region_detect_mist(rd, params):   
+    rd.preprocess(species=params['MIST']['species'],
+                   hvg_prop=params['MIST']['hvg_prop'], 
+                   n_pcs=params['MIST']['n_pcs'],
+                    min_cell_count=params['MIST']['min_cell_count'],
+                      min_read_count=params['MIST']['min_read_count'])
 
-    rd.extract_regions(min_sim = args['MIST']['min_sim'],
-                        min_size=args['MIST']['min_sim'],
-                          gap=args['MIST']['step_size'])
+    rd.extract_regions(min_sim = params['MIST']['min_sim'],
+                        min_size=params['MIST']['min_region_size'],
+                          gap=params['MIST']['step_size'])
     
     rd.assign_region_colors()
     rd.extract_regional_markers()
@@ -102,3 +114,36 @@ def plot_regions(rd):
 
     axs[1].legend(frameon=True, fontsize=12, bbox_to_anchor=(1.02, 0.8))
     axs[1].set_title("ReSort matched regions")
+
+def load_data(args):
+    input_path = args.input
+    if input_path.endswith('.csv'):
+        return load_csv(args.csv)
+    else:
+        try: 
+            return load_visium(args.visium)
+        except:
+            print("Wrong input data.")
+            return False
+
+def main(args):
+    rd = load_data(args)
+    if not rd:
+        logging.info("Data paths need to be provided.")
+        return
+    logging.info("Data successfully loaded.")
+    params = get_yaml(args.param_fn)
+    rd = region_detect_mist(rd, params)
+    logging.info("Regions detected.")
+    rd = auto_name_assign(rd, params['RESORT'])
+    logging.info("Regions' names matched.")
+    save_ReSort(rd, args.outdir)
+    logging.info("Pseudo-internal reference generated and saved.")
+    f = plot_regions(rd)
+    f.savefig(f'{args.outdir}/region-levels.pdf', dpi=100, bbox_to_inches='tight')
+    logging.info(f'Reference and artifacts saved at {args.outdir}/.')
+
+if __name__ == "__main__":
+    args = get_args()
+    logging.basicConfig(filename=f'{args.outdir}/pseudo_internal_ref.log',level=logging.info)
+    main(args)

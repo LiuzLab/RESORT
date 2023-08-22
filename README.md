@@ -12,9 +12,11 @@ An approach to enhance reference-based spatial deconvolution methods
 ### MIST dependencies
 
 Make sure python@3.9 is used. We recommend using an virtual environment for MIST's dependencies.
+To automatic ReSort's pipeline, we will install virtual environments in the folder `~/envs/`
 
 ```console
-$ cd MIST/
+$ mkdir ~/envs/
+$ cd  ~/envs/
 $ python3 -m venv env_MIST
 $ source env_MIST/bin/activate
 (env_MIST)$
@@ -43,9 +45,10 @@ Type "help", "copyright", "credits" or "license" for more information.
 We recommend using an virtual environment for stereoscope installation. To run RESORT with the latest stereoscope version, please clone `stsc` into home directory `~/stsc` or other user customized folder by running `git clone https://github.com/almaan/stereoscope.git`. To install `stereoscope`:
 
 ```console
-$ cd ~/stsc/
+$ cd ~/envs/
 $ python3 -m venv env_stsc
-(env_stsc)$ source env_stsc/bin/activate
+$ source env_stsc/bin/activate
+(env_stsc)$ cd ~/stsc/
 (env_stsc)$ ./setup.py install
 ```
 
@@ -76,3 +79,5 @@ Although we provided adaptors to integrate ReSort with **R**-based deconvolution
   - [Folder]/filtered_feature_bc_matrix.h5
 2. General spatial transcriptomics data:
   - counts.csv - gene expression data frame in Pandas.DataFrame format, where each row is a spot and each column is a gene. Spots' indices are in the format of `axb` where `a` is `x coordinate` and `b` is `y coordinate`.
+
+## Run RESORT with the Stereoscope for region-leve deconvolution
