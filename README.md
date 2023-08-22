@@ -11,14 +11,22 @@ An approach to enhance reference-based spatial deconvolution methods
 
 ### MIST dependencies
 
-We recommend using an virtual environment for MIST's dependencies
+Make sure python@3.9 is used. We recommend using an virtual environment for MIST's dependencies.
 
 ```console
 $ cd MIST/
 $ python3 -m venv env_MIST
 $ source env_MIST/bin/activate
-(env_MIST)$ pip install -r requirements.txt
+(env_MIST)$
 ```
+
+Make sure `pip3` is using the virtual environment:
+```console
+(env_MIST)$ which pip3
+~/env_MIST/bin/pip3
+```
+
+Install the dependencies from `requirements.txt` by running `pip3 install -r requirements.txt`.
 
 To test if MIST dependencies are installed:
 
@@ -36,7 +44,7 @@ We recommend using an virtual environment for stereoscope installation. To run R
 
 ```console
 $ cd ~/stsc/
-$ python3 -m venv (env_stsc)
+$ python3 -m venv env_stsc
 (env_stsc)$ source env_stsc/bin/activate
 (env_stsc)$ ./setup.py install
 ```
