@@ -71,19 +71,19 @@ Although we provided adaptors to integrate ReSort with **R**-based deconvolution
 * [Spotlight] (https://marcelosua.github.io/SPOTlight/)
 * [SpatialDWLS/Giotto] (https://rubd.github.io/Giotto_site/)
 
-## Input data format
+<!-- ## Input data format
 1. For 10X Visium, Space Ranger `Folder` with the following contents:
   - [Folder]/spatial/tissue_positions_list.csv
   - [Folder]/filtered_feature_bc_matrix.h5
 2. General spatial transcriptomics data:
-  - counts.csv - gene expression data frame in Pandas.DataFrame format, where each row is a spot and each column is a gene. Spots' indices are in the format of `axb` where `a` is `x coordinate` and `b` is `y coordinate`.
+  - counts.csv - gene expression data frame in Pandas.DataFrame format, where each row is a spot and each column is a gene. Spots' indices are in the format of `axb` where `a` is `x coordinate` and `b` is `y coordinate`. -->
 
-## Run RESORT with the Stereoscope for region-leve deconvolution
+## Run RESORT
 
-To run RESORT:
+To run RESORT, call:
 
 ```
-  python resort_region_level.py --input INPUT_PATH \
+  python RESORT.py --input INPUT_PATH \
                                 --outdir OUTPUT_DIR \
                                 --param_fn PARAM_YAML_FN \
                                 --finer OPTIONAL \
