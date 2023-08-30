@@ -1,12 +1,11 @@
 MIST:
   species: 'Human' #either Mouse or Human
-  n_pcs: 10 # number of PCs to be used
+  n_pcs: 5 # number of PCs to be used
   min_sim: 0.5 # minimum of similarity scores for thresholding
   max_sim: 0.91 # maximum of similarity scores for thresholding
-  min_cell_count: 2
+  min_cell_count: 3
   min_read_count: 200
-  min_region_size: 10 # minimum region size
-  region_min: 3 # minimum region to be detected
+  min_region_size: 20 # minimum region size
   hvg_prop: 0.9 #top 90% of hvgs used
   step_size: 0.02 #search step of the weights
 
