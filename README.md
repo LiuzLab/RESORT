@@ -41,9 +41,9 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>> quit()
 ```
 
-### Stereoscope dependencies
+### Install Stereoscope (stsc)
 
-We recommend using an virtual environment for stereoscope installation. To run RESORT with the latest stereoscope version, please clone `stsc` into a directory `/path/to/stsc` by running `git clone https://github.com/almaan/stereoscope.git`. To install `stereoscope`:
+To run RESORT with the latest stereoscope version, please clone `stsc` into a directory `/path/to/stsc` by running `git clone https://github.com/almaan/stereoscope.git`. To install `stereoscope`:
 
 ```console
 (env_resort)$ cd /path/to/stsc
