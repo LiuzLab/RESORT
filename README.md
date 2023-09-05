@@ -107,3 +107,71 @@ Parameters:
     * finer: True of False, whether performing finer cell type deconvolution or not, if yes, an external reference is required.
     * ref_count_fp: path to reference count matrix in tsv format, required if finer is True. rows: cells, columns: genes.
     * ref_meta_fp: path to reference meta matrix in tsv format, required if finer is True. rows: cells, column `bio_celltype`: cell type annotation.
+
+### Region-level reference-free deconvolution
+
+To run reference-free region-level deconvolution:
+
+```console
+  python RESORT.py --input INPUT_PATH \
+                                --outdir OUTPUT_DIR \
+                                --param_fn PARAM_YAML_FN
+```
+
+An yaml file is required to specify MIST and RESORT parameters, please refer to `params.yaml` as a template to tune the parameters.
+This yaml file contains three fields. Field `MIST` and `RESORT` are required for region-level deconvoution.
+The field `MIST` spcifies parameters related to the package [MIST]() for region detection.
+
+```console
+MIST:
+  species: 'Human' #either Mouse or Human
+  n_pcs: 5 # number of PCs to be used
+  min_sim: 0.5 # minimum of similarity scores for thresholding
+  max_sim: 0.91 # maximum of similarity scores for thresholding
+  min_cell_count: 3
+  min_read_count: 200
+  min_region_size: 20 # minimum region size
+  hvg_prop: 0.9 #top 90% of hvgs used
+  step_size: 0.02 #search step of the weights
+```
+
+The field `RESORT` specifies marker genes for each of the expected region-level cell types from the users' input:
+
+```
+RESORT:
+  Cancer: ['TM4SF1']
+  Ductal: ['CRISP3']
+  Other Normal: ['PRSS1']
+```
+
+RESORT will require these marker genes to annotate each of the detected regions. 
+
+### Finer cell type deconvolution
+
+To run finer cell type deconvolution, a single-cell RNA-seq data and the cell type annotation file are needed as an external reference. Please refer to [stsc]() for detailed formats of such files. In brief, 
+  * count.tsv: rows are cells, columns are genes, whose symbols match with the ST data.
+  * meta.tsv: rows are cells and match with the `count.tsv`, one column must be `bio_celltype` denoting cell type.
+
+The following command will yield the final results for finer cell type deconvolution on the PDAC-A ST sample:
+
+```console
+  python RESORT.py --input data/PDACA/PDACA_ST.csv \
+                    --outdir results/PDACA/ \
+                    --param_fn params.yaml \
+                    --finer True \
+                    --ref_count_fp data/PDACA/reference/pdacb_count.tsv \
+                    --ref_meta_fp data/PDACA/reference/pdacb_meta.tsv
+```
+
+In finer cell type deconvolution, another field is required in the `params.yaml`, which is `CellHierarchy`:
+
+```
+CellHierarchy: 
+  Cancer: ['Cancer']
+  Ductal: ['Ductal - APOL1 high', 'Ductal - CRISP3 high', 'Ductal - MHC Class II', 'Ductal - terminal ductal like']
+  Other Normal: ['Acinar cells', 'Endocrine cells', 'Endothelial cells', 'Macrophages', 'Mast cells', 'Monocytes', 'T cells & NK cells', 'Tuft cells', 'mDCs', 'pDCs']
+```
+
+It specifies the hierarchy of the cell types among the region-level cell types and the finer cell types. All the finer cell types appeared in the cell hierarchy should also exist in the annotation file for the external reference. 
+
+The results will be saved to `results/PDACA/final` in this case.

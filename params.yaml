@@ -13,3 +13,8 @@ RESORT:
   Cancer: ['TM4SF1']
   Ductal: ['CRISP3']
   Other Normal: ['PRSS1']
+
+CellHierarchy: 
+  Cancer: ['Cancer']
+  Ductal: ['Ductal - APOL1 high', 'Ductal - CRISP3 high', 'Ductal - MHC Class II', 'Ductal - terminal ductal like']
+  Other Normal: ['Acinar cells', 'Endocrine cells', 'Endothelial cells', 'Macrophages', 'Mast cells', 'Monocytes', 'T cells & NK cells', 'Tuft cells', 'mDCs', 'pDCs']
